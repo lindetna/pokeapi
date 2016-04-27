@@ -6,7 +6,12 @@ import android.os.Bundle;
 
 import android.widget.TextView;
 
-
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 
 public class MyActivity extends AppCompatActivity {
@@ -15,24 +20,31 @@ public class MyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        TextView test = (TextView)findViewById(R.id.text);
+        final TextView test = (TextView)findViewById(R.id.text);
         //AsyncTask<String, String, String> text = new httpcall().execute("http://pokeapi.co/api/v2/pokemon/1");
         test.setText("test");
-        //test.setText(httpcall.getinfo("http://pokeapi.co/api/v2/pokemon/1"));
-      /*  HttpResponse<JsonNode> response = null;
 
-        // These code snippets use an open-source library. http://unirest.io/java
-       try {
-             response = Unirest.get("https://phalt-pokeapi.p.mashape.com/pokemon/1/")
-                     .header("X-Mashape-Key", "zt7UYnPZsrmshGb9MJjLRCwh0Ly0p1q5O5Kjsn1dHVW2qAZugj")
-                     .asJson();
-           test.setText("ok");
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://pokeapi.co/api/v2/pokemon/1";
 
-           Log.v("test", "ok");
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
-*/
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        test.setText("Response is: "+ response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                test.setText("That didn't work!");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
         //ArticleFragment articleFragment = new ArticleFragment();
     }
 

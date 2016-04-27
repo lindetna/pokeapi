@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\David Lin\Desktop\etna\android\pokeapi\app\build\intermediates\exploded-aar\com.github.erd\android-volley\1.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="24c7ec1ecd41d65b24a76cef274fdd5f0805e98b">
+        <dex dex="C:\Users\David Lin\Desktop\etna\android\pokeapi\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.github.erd-android-volley-1.0.0_f086dbeb2fccd61f458428cb081a732823f60451\classes.dex" />
+    </item>
+
+</items>

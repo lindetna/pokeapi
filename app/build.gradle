@@ -24,4 +24,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile files('unirest-android-1.4.1.0.jar')
+    compile 'com.github.erd:android-volley:1.0.0'
 }
