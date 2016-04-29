@@ -35,6 +35,7 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
 
     private Generation generation;
     private RequestQueue queue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,22 +50,16 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
         generation  = new Generation(1);
 
         initGenList(callback);
-        //Récupération de la liste des personnes
+        myWebServiceFun();
         ArrayList<Generation> listG = generation.getGenList();
 
-        Log.v("Listg", String.valueOf(listG.isEmpty()));
-
-        //Création et initialisation de l'Adapter pour les personnes
         GenerationAdapter adapter = new GenerationAdapter(this, listG);
 
         adapter.addListener(this);
 
-        //Récupération du composant ListView
         ListView list = (ListView) findViewById(R.id.idListGen);
 
-        //Initialisation de la liste avec les données
         list.setAdapter(adapter);
-
     }
 
 
@@ -82,41 +77,26 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
 
     private void initGenList(final VolleyCallback callback) {
 
-        /**
-         * ATTENTION: This was auto-generated to implement the App Indexing API.
-         * See https://g.co/AppIndexing/AndroidStudio for more information.
-         */
         GoogleApiClient client;
 
         queue = Volley.newRequestQueue(this);
 
-        // Instantiate the RequestQueue.
         String url = "http://pokeapi.co/api/v2/generation/";
-        //final String TAG = "Type";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //generation.setGenList(response);
-                       // ArrayList<Generation> listG = generation.getGenList();
                         callback.onSuccessResponse(response);
-                        //Log.v("List2", String.valueOf(listG.isEmpty()));
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
-                        Log.v("test", "ko");
                     }
                 });
-
-        //stringRequest.setTag(TAG);
-
-        // Add the request to the RequestQueue.
         queue.add(jsObjRequest);
-        //StopRequest(TAG);
     }
 
     public void myWebServiceFun() {
@@ -126,15 +106,7 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
         initGenList(new VolleyCallback() {
                     @Override
                     public void onSuccessResponse(JSONObject result) {
-
-
-                            /*Snackbar.make(, result.getString("message") + "", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();*/
-
-                            // do your work with response object
-                        Log.v("test1", "ok");
                         generation.setGenList(result);
-                        Log.v("test2", "ok");
                     }
                 });
     }

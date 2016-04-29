@@ -13,4 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </TextView>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/idListPoke"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/gen_id"
+        android:layout_toRightOf="@+id/gen_id"
+        android:layout_toEndOf="@+id/gen_id" />
 </RelativeLayout>

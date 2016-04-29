@@ -25,10 +25,9 @@ import java.util.Iterator;
  * Created by SuChi on 28/04/2016.
  */
 public class Generation {
-    //private static ArrayList<Generation> listGen;
+
     public int id;
     public String nom;
-    RequestQueue queue;
     private ArrayList<Generation> listGen;
 
     public Generation(int tmpId) {
@@ -55,21 +54,9 @@ public class Generation {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        /*try {
-            for (Integer y = 0; jsnarray.getJSONObject(y) != null; y++) {
-
-                Log.v("test" + y, jsnarray.getJSONObject(y).getString("url"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-        Log.v("arraynb", String.valueOf(jsnarray.length()));
         for (Integer x = 0; x < jsnarray.length(); x++) {
             this.listGen.add(new Generation(x + 1));
         }
-        Log.v("listGen", String.valueOf(this.listGen.isEmpty()));
-        //return listGen;
-        Log.v("List", String.valueOf(listGen));
     }
 
 
