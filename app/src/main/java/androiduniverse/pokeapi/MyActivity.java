@@ -52,17 +52,7 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
 
         initGenList(callback);
         myWebServiceFun();
-<<<<<<< HEAD
         ArrayList<Generation> listG = generation.getGenList();
-
-=======
-        //Récupération de la liste des personnes
-        ArrayList<Generation> listG = generation.getGenList();
-        Log.v("Check5", "ok");
-        Log.v("Listg", String.valueOf(listG.isEmpty()));
-
-        //Création et initialisation de l'Adapter pour les personnes
->>>>>>> origin/master
         GenerationAdapter adapter = new GenerationAdapter(this, listG);
 
         adapter.addListener(this);
@@ -97,12 +87,6 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-<<<<<<< HEAD
-=======
-                        //generation.setGenList(response);
-                       // ArrayList<Generation> listG = generation.getGenList();
-                        Log.v("check2", "ok");
->>>>>>> origin/master
                         callback.onSuccessResponse(response);
                     }
                 }, new Response.ErrorListener() {
@@ -122,19 +106,7 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
         initGenList(new VolleyCallback() {
                     @Override
                     public void onSuccessResponse(JSONObject result) {
-<<<<<<< HEAD
                         generation.setGenList(result);
-=======
-
-
-                            /*Snackbar.make(, result.getString("message") + "", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();*/
-
-                            // do your work with response object
-                        Log.v("Check3", "3");
-                        generation.setGenList(result);
-                        Log.v("Check4", "4");
->>>>>>> origin/master
                     }
                 });
     }
