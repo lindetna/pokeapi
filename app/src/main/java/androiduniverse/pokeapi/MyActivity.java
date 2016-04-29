@@ -42,16 +42,18 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
         final VolleyCallback callback = new VolleyCallback() {
             @Override
             public void onSuccessResponse(JSONObject result) {
-                ;
+
             }
         };
 
         generation  = new Generation(1);
+        Log.v("Check1", "ok");
 
         initGenList(callback);
+        myWebServiceFun();
         //Récupération de la liste des personnes
         ArrayList<Generation> listG = generation.getGenList();
-
+        Log.v("Check5", "ok");
         Log.v("Listg", String.valueOf(listG.isEmpty()));
 
         //Création et initialisation de l'Adapter pour les personnes
@@ -100,6 +102,7 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
                     public void onResponse(JSONObject response) {
                         //generation.setGenList(response);
                        // ArrayList<Generation> listG = generation.getGenList();
+                        Log.v("check2", "ok");
                         callback.onSuccessResponse(response);
                         //Log.v("List2", String.valueOf(listG.isEmpty()));
                     }
@@ -132,9 +135,9 @@ public class MyActivity extends AppCompatActivity implements GenerationAdapter.G
                                     .setAction("Action", null).show();*/
 
                             // do your work with response object
-                        Log.v("test1", "ok");
+                        Log.v("Check3", "3");
                         generation.setGenList(result);
-                        Log.v("test2", "ok");
+                        Log.v("Check4", "4");
                     }
                 });
     }
