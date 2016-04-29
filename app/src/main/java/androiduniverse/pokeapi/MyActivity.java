@@ -1,9 +1,15 @@
 package androiduniverse.pokeapi;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -14,115 +20,129 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 
-public class MyActivity extends AppCompatActivity {
 
-    RequestQueue queue;
+public class MyActivity extends AppCompatActivity implements GenerationAdapter.GenerationAdapterListener {
 
+    private Generation generation;
+    private RequestQueue queue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        queue = Volley.newRequestQueue(this);
-        final TextView test = (TextView) findViewById(R.id.text);
+        final VolleyCallback callback = new VolleyCallback() {
+            @Override
+            public void onSuccessResponse(JSONObject result) {
+                ;
+            }
+        };
 
-        //AsyncTask<String, String, String> text = new httpcall().execute("http://pokeapi.co/api/v2/pokemon/1");
-       // test.setText("test");
+        generation  = new Generation(1);
+
+        initGenList(callback);
+        //Récupération de la liste des personnes
+        ArrayList<Generation> listG = generation.getGenList();
+
+        Log.v("Listg", String.valueOf(listG.isEmpty()));
+
+        //Création et initialisation de l'Adapter pour les personnes
+        GenerationAdapter adapter = new GenerationAdapter(this, listG);
+
+        adapter.addListener(this);
+
+        //Récupération du composant ListView
+        ListView list = (ListView) findViewById(R.id.idListGen);
+
+        //Initialisation de la liste avec les données
+        list.setAdapter(adapter);
+
+    }
+
+
+    public void onClickNom(Generation item, int position) {
+        Intent intent = new Intent(getApplicationContext(), PokeListActivity.class);
+        intent.putExtra("genId", item.id);
+        startActivity(intent);
+    }
+
+
+
+    public interface VolleyCallback {
+        void onSuccessResponse(JSONObject result);
+    }
+
+    private void initGenList(final VolleyCallback callback) {
+
+        /**
+         * ATTENTION: This was auto-generated to implement the App Indexing API.
+         * See https://g.co/AppIndexing/AndroidStudio for more information.
+         */
+        GoogleApiClient client;
+
+        queue = Volley.newRequestQueue(this);
 
         // Instantiate the RequestQueue.
-        //RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://pokeapi.co/api/v2/generation/";
-        final String TAG = "Type";
-
-        // Request a string response from the provided URL.
-        /*StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        test.setText("Response is: " + response.substring(0,50));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                test.setText("That didn't work!");
-            }
-
-        });*/
+        //final String TAG = "Type";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
                     @Override
                     public void onResponse(JSONObject response) {
-                        JSONArray jsnarray = null;
-                        String name = null;
-                        String generation_url = null;
-
-                        try {
-                            jsnarray = response.getJSONArray("results");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            for (Integer x = 0; jsnarray.getJSONObject(x) != null; x++) {
-                                try {
-                                    name = jsnarray.getJSONObject(x).getString("name");
-                                    generation_url = jsnarray.getJSONObject(x).getString("url");
-                                    test.setText(test.getText() + "Response: " + name);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        //generation.setGenList(response);
+                       // ArrayList<Generation> listG = generation.getGenList();
+                        callback.onSuccessResponse(response);
+                        //Log.v("List2", String.valueOf(listG.isEmpty()));
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
-
+                        Log.v("test", "ko");
                     }
                 });
 
-
-
         //stringRequest.setTag(TAG);
+
         // Add the request to the RequestQueue.
         queue.add(jsObjRequest);
-
         //StopRequest(TAG);
+    }
 
-        }
+    public void myWebServiceFun() {
 
-        protected void StopRequest (String TAG) {
-        super.onStop();
+        String url = "http://pokeapi.co/api/v2/generation/";
+
+        initGenList(new VolleyCallback() {
+                    @Override
+                    public void onSuccessResponse(JSONObject result) {
+
+
+                            /*Snackbar.make(, result.getString("message") + "", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();*/
+
+                            // do your work with response object
+                        Log.v("test1", "ok");
+                        generation.setGenList(result);
+                        Log.v("test2", "ok");
+                    }
+                });
+    }
+
+    protected void StopRequest (String TAG) {
         if (queue != null) {
             queue.cancelAll(TAG);
         }
     }
-
-
-        //ArticleFragment articleFragment = new ArticleFragment();
-
-
-
-
-
-    /*public class ArticleFragment extends Fragment {
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.activity_my, container, false);
-        }
-    }*/
 }
+
